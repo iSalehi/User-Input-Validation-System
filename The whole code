@@ -1,0 +1,149 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class InvalidInputException extends Exception {
+    public InvalidInputException(String message) {
+        super(message);
+    }
+}
+
+class User {
+    private String name;
+    private int age;
+    private String email;
+    private String phone;
+
+    public User(String name, int age, String email, String phone) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public String toString() {
+        return "Name: " + name + ", Age: " + age + ", Email: " + email + ", Phone: " + phone;
+    }
+}
+
+class UserInputValidator {
+
+    public static String validateName(String name) throws InvalidInputException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new InvalidInputException("Name cannot be blank.");
+        }
+        return name;
+    }
+
+    public static int validateAge(String ageInput) throws InvalidInputException {
+        try {
+            int age = Integer.parseInt(ageInput);
+
+            if (age < 0) {
+                throw new InvalidInputException("Age must be a positive integer.");
+            }
+
+            return age;
+
+        } catch (NumberFormatException e) {
+            throw new InvalidInputException("Age must be a number.");
+        }
+    }
+
+    public static String validateEmail(String email) throws InvalidInputException {
+        if (!email.contains("@")) {
+            throw new InvalidInputException("Email must contain @.");
+        }
+
+        if (!(email.endsWith(".com") || email.endsWith(".edu"))) {
+            throw new InvalidInputException("Email must end with .com or .edu.");
+        }
+
+        return email;
+    }
+
+    public static String validatePhone(String phone) throws InvalidInputException {
+        if (!phone.matches("\\d{10}")) {
+            throw new InvalidInputException("Phone number must be exactly 10 digits.");
+        }
+
+        return phone;
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        ArrayList<User> users = new ArrayList<>();
+
+        boolean addMore = true;
+
+        while (addMore) {
+
+            String name = "";
+            int age = 0;
+            String email = "";
+            String phone = "";
+
+            while (true) {
+                try {
+                    System.out.print("Enter your name: ");
+                    name = UserInputValidator.validateName(input.nextLine());
+                    break;
+                } catch (InvalidInputException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    System.out.print("Enter your age: ");
+                    age = UserInputValidator.validateAge(input.nextLine());
+                    break;
+                } catch (InvalidInputException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    System.out.print("Enter your email: ");
+                    email = UserInputValidator.validateEmail(input.nextLine());
+                    break;
+                } catch (InvalidInputException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    System.out.print("Enter your phone number: ");
+                    phone = UserInputValidator.validatePhone(input.nextLine());
+                    break;
+                } catch (InvalidInputException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            }
+
+            users.add(new User(name, age, email, phone));
+
+            System.out.println("User added successfully!");
+
+            System.out.print("Do you want to add another user? yes/no: ");
+            String answer = input.nextLine();
+
+            if (!answer.equalsIgnoreCase("yes")) {
+                addMore = false;
+            }
+        }
+
+        System.out.println("\nAll valid users:");
+
+        for (User user : users) {
+            System.out.println(user);
+        }
+
+        input.close();
+    }
+}
