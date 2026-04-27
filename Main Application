@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class UservaliddatorApp {
+public class Main {
 
     public static void main(String[] args) {
 
@@ -49,7 +49,7 @@ public class UservaliddatorApp {
 
             while (true) {
                 try {
-                    System.out.print("Enter your phone number: ");
+                    System.out.print("Enter phone number: ");
                     phone = UserInputValidator.validatePhone(input.nextLine());
                     break;
                 } catch (InvalidInputException e) {
