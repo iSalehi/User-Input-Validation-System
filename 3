@@ -1,1 +1,80 @@
+import java.util.ArrayList;
+import java.util.Scanner;
 
+public class UservaliddatorApp {
+
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        ArrayList<User> users = new ArrayList<>();
+
+        boolean addMore = true;
+
+        while (addMore) {
+
+            String name = "";
+            int age = 0;
+            String email = "";
+            String phone = "";
+
+            while (true) {
+                try {
+                    System.out.print("Enter your name: ");
+                    name = UserInputValidator.validateName(input.nextLine());
+                    break;
+                } catch (InvalidInputException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    System.out.print("Enter your age: ");
+                    age = UserInputValidator.validateAge(input.nextLine());
+                    break;
+                } catch (InvalidInputException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    System.out.print("Enter your email: ");
+                    email = UserInputValidator.validateEmail(input.nextLine());
+                    break;
+                } catch (InvalidInputException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    System.out.print("Enter your phone number: ");
+                    phone = UserInputValidator.validatePhone(input.nextLine());
+                    break;
+                } catch (InvalidInputException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            }
+
+            users.add(new User(name, age, email, phone));
+
+            System.out.println("User added successfully!");
+
+            System.out.print("Do you want to add another user? yes/no: ");
+            String answer = input.nextLine();
+
+            if (!answer.equalsIgnoreCase("yes")) {
+                addMore = false;
+            }
+        }
+
+        System.out.println("\nAll valid users:");
+
+        for (User user : users) {
+            System.out.println(user);
+        }
+
+        input.close();
+    }
+}
